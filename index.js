@@ -2,8 +2,8 @@ const https = require("https")
 const http = require("http")
 const net = require("net")
 const {hrtime} = process
-const AWS = require("aws-sdk")
-const cloudwatch = new AWS.CloudWatch()
+const { CloudWatch } = require("@aws-sdk/client-cloudwatch");
+const cloudwatch = new CloudWatch()
 
 const hrToMs = (timing) => Math.round(timing[0] * 1000 + timing[1] / 1000000)
 const hrDiff = (start, end) => hrToMs(end) - hrToMs(start)
@@ -41,7 +41,7 @@ const sendData = (data, event) => Promise.all(
         .map(metricData => cloudwatch.putMetricData({
             Namespace: event.namespace || "Watchtower",
             MetricData: metricData
-        }).promise())
+        }))
 )
 
 const handlers = {}
